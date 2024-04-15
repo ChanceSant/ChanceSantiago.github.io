@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js" integrity="sha512-uaz5GpnQoE6t5echKlX8P52czvsIGgLPcvlzfvRubLZ1Hp8JemUDnbUiAahbVtPb+jUVrNETuXvAhDDF/N3M4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>Document</title>
+    <style>
+        body{
+            margin:0;
+            padding:0;
+            overflow:hidden;
+            
+        }
+        .restart{
+            position:absolute;
+            left: 35%;
+            top: 60%;
+            color:lime;
+            font-size: 80px;
+            background-color:transparent;
+            border:none;
+        }
+        .restart:hover{
+            text-shadow: 10px 10px 0px black
+        }
+        .quit{
+            position:absolute;
+            left: 60%;
+            top: 60%;
+            color:lime; 
+            font-size: 80px;
+            background-color:transparent;
+        }
+    </style>
+</head>
+<body>
+    <div>
+    <button onclick = "restart()" class="restart">Restart</button>
+    <button onclick = "quit()"class="quit">Quit</button>
+    </div>
+    <script>
+    let h = window.innerHeight
+    let w = window.innerWidth
+    //declare variable with no value so it is global
+    let bg 
+
+    function setup(){
+        createCanvas(w,h)
+        //Assign variable with a value
+        bg = loadImage('https://imgs.search.brave.com/OZI0ZGKBIUoQAQcgVaq6OFrQEv-w8J26Tni5e8adtfc/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93d3cu/Z2FtZXNkYXRhYmFz/ZS5vcmcvTWVkaWEv/U1lTVEVNL0FyY2Fk/ZS9HYW1lT3Zlci9U/aHVtYi9UaHVtYl9E/YW5jZV9EYW5jZV9S/ZXZvbHV0aW9uXy1f/MTk5OV8tX0tvbmFt/aS5qcGc')    }
+    function draw(){
+        
+        //loop background
+        background(bg)
+    }
+
+    function restart(){
+        window.location.href = 'Lv1.html'
+    }
+        
+    </script>
+</body>
+</html>

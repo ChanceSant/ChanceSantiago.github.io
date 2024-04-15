@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js" integrity="sha512-2r+xZ/Dm8+HI0I8dsj1Jlfchv4O3DGfWbqRalmSGtgdbVQrZyGRqHp9ek8GKk1x8w01JsmDZRrJZ4DzgXkAU+g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.js" integrity="sha512-TU9AWtV5uUZPX8dbBAH8NQF1tSdigPRRT82vllAQ1Ke28puiqLA6ZVKxtUGlgrH6yWFnkKy+sE6luNEGH9ar0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+
+<!-- Includes the p5.collide2D addon library -->
+<script defer src="https://unpkg.com/p5.collide2d"></script>
+</head>
+<body>
+    <script>
+        let hit_1 = false
+        let hit_2 = false
+        let hit_3 = false
+        let w = window.innerWidth
+        let h = window.innerHeight
+        let player //declare an unknown variable
+        function setup(){
+            createCanvas(w,h)
+             player = new jumper()//define jumper as new object
+        }
+        //new player object
+        function jumper(){
+            //I will make a box that starts at the top of the screen 
+
+            //start position of our box
+             this.x = w/2
+             this.y = 0
+
+            //function to set up the initial jumper
+    
+            this.show = function(){
+                //here is where we determine what it will look like
+                fill(255,0,0)
+                circle(this.x,this.y,150)
+                fill("brown")
+                rect(60,500,50,500)
+                fill("orange")
+                rect(w,1,1,h)
+                fill("red")
+                rect(3595,-1,200,h)
+            }
+            //function to loop on repeat within draw function
+            this.update = function(){
+                 hit_1 = collideRectCircle(60,500,50,500,this.x,this.y,150)
+
+                 hit_2 = collideRectCircle(1,1,1,h,this.x,this.y,150)
+                
+                 hit_3 = collideRectCircle(3595,-1,200,h,this.x,this.y,150)
+                 if(hit_1 === true){
+                window.location.href="title.html"
+                }
+                 if(hit_2 === true){
+                    this.x = w
+                    this.y = h/2
+                }
+                if(hit_3 === true){
+                    this.x = w/2
+                    this.y = h/2
+
+                }
+                
+
+            }      
+            this.down = function(){
+                if(keyIsDown(40))
+                this.y += 10
+            }
+            this.up = function(){
+                if(keyIsDown(38)){
+                    this.y -= 10
+                }
+            }
+            this.left = function(){
+                if(keyIsDown(37)){
+                    this.x -= 10
+                }
+            }
+            this.right = function(){
+                if(keyIsDown(39)){
+                    this.x += 10
+                }
+            }
+            this.next = function(){
+                if(keyIsDown(49)){
+                    window.location.href = "title.html"
+                }
+            }
+        }
+
+
+        function draw(){
+            clear()
+            player.show()
+            player.update()
+            player.up()
+            player.left()
+            player.right()
+            player.down()
+            player.next()
+            //player.collision()
+        //    player.hit()
+        }
+    </script>
+</body>
+</html>

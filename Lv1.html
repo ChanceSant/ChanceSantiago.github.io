@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js" integrity="sha512-2r+xZ/Dm8+HI0I8dsj1Jlfchv4O3DGfWbqRalmSGtgdbVQrZyGRqHp9ek8GKk1x8w01JsmDZRrJZ4DzgXkAU+g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.js" integrity="sha512-TU9AWtV5uUZPX8dbBAH8NQF1tSdigPRRT82vllAQ1Ke28puiqLA6ZVKxtUGlgrH6yWFnkKy+sE6luNEGH9ar0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+
+<!-- Includes the p5.collide2D addon library -->
+<script defer src="https://unpkg.com/p5.collide2d"></script>
+<style>  
+body{
+    margin:0;
+    padding:0;
+    overflow:hidden
+}
+#score {
+            position:absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 2;
+            font-size: 100px;
+            color:black
+        }
+#miss{
+    position:absolute;
+            top: 80px;
+            left: 10px;
+            z-index: 2;
+            font-size: 100px;
+            color:black
+}
+</style>
+</head>
+    <script>
+        //random starting point for the "arrows"
+        // let r = random(500,1000)
+        //score 
+        let score = 0
+        //makes collisions run once
+        let collide = 0
+        let r_collide = 0
+        let d_collide = 0
+        let u_collide = 0
+        //miss tracks the miss
+        let miss = 0
+        //images for each arrow
+        let r_arrow 
+        let l_arrow 
+        let d_arrow 
+        let u_arrow 
+        //each collision
+        let hit_1 = false
+        let hit_2 = false
+        let hit_3 = false
+        let hit_4 = false
+        let left_bounds = false
+        let w = window.innerWidth
+        let h = window.innerHeight
+        let left
+        let left_middle
+        let right_middle
+        let right //declare an unknown variable
+       //pre loading the images so they load first
+        function preload(){
+            r_arrow = loadImage("arrows/right_arrow.png")
+            l_arrow = loadImage("arrows/left_arrow.png")
+            d_arrow = loadImage("arrows/down_arrow.png")
+            u_arrow = loadImage("arrows/up_arrow.png")
+                
+        }
+        function setup(){
+            createCanvas(w,h)
+             left = new left_box()            
+             right = new right_box()//define jumper as new object
+             down = new left_middle_box()
+             up = new right_middle_box()
+        }
+        //new player object all the details for the right box
+        function right_box(){
+            //I will make a box that starts at the top of the screen 
+            let r = random(500,1000)
+            //start position of our box
+             this.x = w/1.5
+             this.y = 1500
+
+            this.gravity = .6 
+            //velocity
+            this.velocity = 0
+
+            //function to set up the initial jumper
+    
+            this.show = function(){
+                //here is where we determine what it will look like
+                fill(255,0,0)
+                image(r_arrow,this.x,this.y,150,150)
+                image(r_arrow,w/1.5,20,150,150)
+                fill("black")
+                rect(-10,-300,w,10)
+            }
+            //function to loop on repeat within draw function
+            this.update = function(){
+                 //add velocity to gravity
+                 this.velocity -= this.gravity
+                //what direction am I traveling 
+                this.y += this.velocity
+                //resistence to falling
+                this.velocity *= .9     
+
+                document.getElementById('number').innerHTML = score
+                document.getElementById('misses').innerHTML = miss
+
+                hit_1 = collideRectRect(w/1.5,20,150,150,this.x,this.y,150,150)
+                right_bounds = collideRectRect(-10,-300,w,10,this.x,this.y,150,150)
+       
+                if(hit_1 === true && keyIsDown(39) && r_collide === 0){
+                score += 1
+                r_collide = 1
+                 this.y = random(700,1400)
+
+                }
+                else if(hit_1 === false && keyIsDown(39) && r_collide === 0){
+                    score -= 5
+                    r_collide = 1
+                }
+                else if(hit_1 === false && !keyIsDown(39) && r_collide !==0){
+                    r_collide = 0
+                }
+                else if (hit_1 === true && !keyIsDown(39) && miss<=10){
+                }
+                if (score <= -10){
+                    window.location.href = "lose_screen.html"
+             
+                }
+                else if (right_bounds === true){
+                    miss += 1
+                    if (miss <=9){
+                        this.y = random(300,1000)
+                    }
+                    else if (miss = 10){
+                        window.location.href= "lose_screen.html"
+                    }
+                }
+                
+
+            }      
+           
+        }
+// all the details for the left box 
+        function left_box(){
+            //I will make a box that starts at the top of the screen 
+            let r = random(500,1000)
+            //start position of our box
+             this.x = w/3.6
+             this.y = 1000
+
+            this.gravity = .6 
+            //velocity
+            this.velocity = 0
+
+            //function to set up the initial jumper
+    
+            this.show = function(){
+                //here is where we determine what it will look like
+                fill(255,0,0)
+                image(l_arrow,this.x,this.y,150,150)
+                image(l_arrow,w/3.6,20,150,150)
+                rect(-10,-300,w,10)
+            }
+            //function to loop on repeat within draw function
+            this.update = function(){
+                 //add velocity to gravity
+                 this.velocity -= this.gravity
+                //what direction am I traveling 
+                this.y += this.velocity
+                //resistence to falling
+                this.velocity *= .9     
+
+                document.getElementById('number').innerHTML = score
+                document.getElementById('misses').innerHTML = miss
+                
+
+                hit_2 = collideRectRect(w/3.6,20,150,150,this.x,this.y,150,150)
+                left_bounds = collideRectRect(-10,-300,w,10,this.x,this.y,150,150)
+       
+                
+                 if(hit_2 === true && keyIsDown(37) && collide === 0){
+                score += 1
+                collide = 1
+                this.y = random(500,1000)
+                }
+                else if(hit_2 === false && keyIsDown(37) && collide === 0){
+                    score -= 5
+                    collide = 1
+                }
+                else if(hit_2 === false && !keyIsDown(37) && collide !==0){
+                    collide = 0
+                }
+                else if (left_bounds === true){
+                    miss += 1
+                    this.gravity += .01
+                    if (miss <=9){
+                        this.y = random(300,1000)
+                    }
+                    else if (miss = 10){
+                        window.location.href= "lose_screen.html"
+                    }
+                }
+                if (score <= -10){
+                    window.location.href = "lose_screen.html"
+             
+                }
+
+            }      
+        }
+        function left_middle_box(){
+            //I will make a box that starts at the top of the screen 
+            let r = random(500,1000)
+            //start position of our box
+             this.x = w/2.5
+             this.y = 1750
+
+            this.gravity = .6 
+            //velocity
+            this.velocity = 0
+
+            //function to set up the initial jumper
+    
+            this.show = function(){
+                //here is where we determine what it will look like
+                fill(255,0,0)
+                image(d_arrow,this.x,this.y,150,150)
+                fill("brown")
+                image(d_arrow,w/2.5,20,150,150)
+                fill("black")
+                rect(-10,-300,w,10)
+            }
+            //function to loop on repeat within draw function
+            this.update = function(){
+                 //add velocity to gravity
+                 this.velocity -= this.gravity
+                //what direction am I traveling 
+                this.y += this.velocity
+                //resistence to falling
+                this.velocity *= .9 
+
+                document.getElementById('number').innerHTML = score
+                document.getElementById('misses').innerHTML = miss
+
+                hit_3 = collideRectRect(w/2.5,20,150,150,this.x,this.y,150,150)
+                left_middle_bounds = collideRectRect(-10,-300,w,10,this.x,this.y,150,150)
+       
+                if(hit_3 === true && keyIsDown(40) && d_collide === 0){
+                    if (miss >=5){
+                        score+= 3
+                    }    
+                    else if(miss <5){
+                        score += 1
+                    }
+                d_collide = 1
+                 this.y = random(700,1400)
+
+                }
+                else if(hit_3 === false && keyIsDown(40) && d_collide === 0){
+                    score -= 5
+                    d_collide = 1
+                }
+                else if(hit_3 === false && !keyIsDown(40) && d_collide !==0){
+                    d_collide = 0
+                }
+                else if (hit_3 === true && !keyIsDown(40) && miss<=10){
+                }
+                if (score <= -10){
+                    window.location.href = "lose_screen.html"
+             
+                }
+                else if (left_middle_bounds === true){
+                    miss += 1
+                    this.gravity +=.01
+                    if (miss <=9){
+                        this.y = random(300,1000)
+                    }
+                    else if (miss = 10){
+                        window.location.href= "lose_screen.html"
+                    }
+                }
+                
+
+            }      
+           
+        }
+        function right_middle_box(){
+            //I will make a box that starts at the top of the screen 
+            let r = random(500,1000)
+            //start position of our box
+             this.x = w/1.8
+             this.y = 2000
+
+            this.gravity = .6 
+            //velocity
+            this.velocity = 0
+
+            //function to set up the initial jumper
+    
+            this.show = function(){
+                //here is where we determine what it will look like
+                fill(255,0,0)
+                image(u_arrow,this.x,this.y,150,150)
+                fill("brown")
+                image(u_arrow,w/1.8,20,150,150)
+                fill("black")
+                rect(-10,-300,w,10)
+            }
+            //function to loop on repeat within draw function
+            this.update = function(){
+                 //add velocity to gravity
+                 this.velocity -= this.gravity
+                //what direction am I traveling 
+                this.y += this.velocity
+                //resistence to falling
+                this.velocity *= .9 
+
+                document.getElementById('number').innerHTML = score
+                document.getElementById('misses').innerHTML = miss
+
+                hit_4 = collideRectRect(w/1.8,20,150,150,this.x,this.y,150,150)
+                left_middle_bounds = collideRectRect(-10,-300,w,10,this.x,this.y,150,150)
+       
+                if(hit_4 === true && keyIsDown(38) && u_collide === 0){
+                    if (miss >=5){
+                        score+= 3
+                    }    
+                    else if(miss <5){
+                        score += 1
+                    }
+                u_collide = 1
+                 this.y = random(700,1400)
+
+                }
+                //If you press before or after the collision you lose points
+                else if(hit_4 === false && keyIsDown(38) && u_collide === 0){
+                    score -= 5
+                    u_collide = 1
+                }
+                //makes sure that if nothing is true no score will be given
+                else if(hit_4 === false && !keyIsDown(38) && u_collide !==0){
+                    u_collide = 0
+                }
+                //makes you lose if score = -10
+                if (score <= -10){
+                    window.location.href = "lose_screen.html"
+             
+                }
+                // if the two objects collide and you do not press the button you gain a miss
+                else if (left_middle_bounds === true){
+                    //every miss makes the object faster
+                    miss += 1
+                    this.gravity += .01
+                    if (miss <=9){
+                        this.y = random(300,1000)
+                    }
+                    else if (miss = 10){
+                        window.location.href= "lose_screen.html"
+                    }
+                }
+                
+
+            }      
+           
+        }
+
+
+        function draw(){
+            // preload()
+            clear()
+            right.show()
+            right.update()
+            left.show()
+            left.update()
+            up.show()
+            up.update()
+            down.show()
+            down.update()
+            
+        }
+    </script>
+<body>
+ <h2 id="score">Score <span id="number"></span></h2>
+ <h2 id ="miss">Misses <span id ="misses"></span></h2>
+</body>
+</html>

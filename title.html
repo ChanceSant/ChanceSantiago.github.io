@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+        <title>Document</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js" integrity="sha512-uaz5GpnQoE6t5echKlX8P52czvsIGgLPcvlzfvRubLZ1Hp8JemUDnbUiAahbVtPb+jUVrNETuXvAhDDF/N3M4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <style>
+            /* force the margine and padding for the body to be zero */
+            body{
+                margin:0;
+                padding:0;
+                overflow:hidden
+            }
+            .control {
+                position:absolute;
+                top: 45%;
+                left: 50%;
+                height: 50px;
+                width: 300px;
+                background-color:antiquewhite;
+                font-family: "Alfa Slab One", serif;
+                font-weight: 400;
+                font-style: normal;
+            }
+            .play{
+                position:absolute;
+                height: 70px;
+                width: 350px;
+                top: 50%;
+                left: 45%;
+                background-color:antiquewhite;
+                font-family: "Alfa Slab One", serif;
+                font-weight: 400;
+                font-style: normal;
+            }
+
+        </style>
+    </head>
+<body>
+    <div class="title">THURSDAY MORNING RELAXATION </div>
+<div class="Controls">
+    <button  class="control" onclick="control()">See Controls</button>
+</div>
+<div class="play">
+   Press "ENTER" To play
+</div>
+
+<script>
+    let h = window.innerHeight
+    let w = window.innerWidth
+    //declare variable with no value so it is global
+    let bg 
+
+    function setup(){
+        createCanvas(w,h)
+        //Assign variable with a value
+        bg = loadImage("dungeon.webp")}
+        let play_Game = new  play()
+    function draw(){
+        //loop background
+        background(bg)
+    }
+    function play(){
+    this.update = function(){
+        if(keyIsDown(13)){
+            window.location.href="Lv1.html"
+        }
+
+        
+    }
+}
+    function control(){
+        window.location.href="prototype.html"
+    }
+
+    function draw(){
+        play_Game.update()
+    }
+    </script>
+</body>
+</html>
